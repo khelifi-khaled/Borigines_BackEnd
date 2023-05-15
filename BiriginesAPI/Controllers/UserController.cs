@@ -1,5 +1,5 @@
 ﻿using BiriginesAPI.DTO;
-using Borigines.Provider.Sql.Models;
+using Borigines.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Commands;
@@ -17,28 +17,30 @@ namespace BiriginesAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IDisptacher _disptacher;
+        private readonly IToken _token;
 
-        public UserController(IDisptacher disptacher)
+        public UserController(IDisptacher disptacher, IToken token)
         {
             _disptacher = disptacher;
+            _token = token;
         }
 
 
 
         //// just for Token test
-        //[HttpPost("Token")]
-        //public IActionResult Token(UserLoginDTO dto)
-        //{
-        //    User? u = _disptacher.Dispatch(new LoginUserQuery(dto.Login, dto.Password));
-        //    if (u is null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(_token.GenerateToken(
-        //        new Claim(ClaimTypes.NameIdentifier,u.Id.ToString()),
-        //        new Claim(ClaimTypes.Role,u.IsAdmin ? "Admin" : "User")
-        //        ));
-        //}
+        [HttpPost("Token")]
+        public IActionResult Token(UserLoginDTO dto)
+        {
+            User? u = _disptacher.Dispatch(new LoginUserQuery(dto.Login, dto.Password));
+            if (u is null)
+            {
+                return NotFound();
+            }
+            return Ok(_token.GenerateToken(
+                new Claim(ClaimTypes.NameIdentifier, u.Id.ToString()),
+                new Claim(ClaimTypes.Role, u.IsAdmin ? "Admin" : "User")
+                ));
+        }
 
 
 

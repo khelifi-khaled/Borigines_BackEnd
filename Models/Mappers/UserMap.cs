@@ -1,4 +1,4 @@
-﻿using Borigines.Provider.Sql.Models;
+﻿using Borigines.Models.Entities;
 using System.Data;
 
 namespace Models.Mappers

@@ -1,4 +1,4 @@
-﻿using Borigines.Provider.Sql.Models;
+﻿using Borigines.Models.Entities;
 using Models.Mappers;
 using System.Data;
 using Tools.CQRS.Queries;

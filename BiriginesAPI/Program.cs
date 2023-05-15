@@ -9,12 +9,15 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Models.Repositories;
+using Models.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("default");
 // Add services to the container.
 
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionString));
 builder.Services.AddHandlersAndDispatcher();
 JWTConfiguration jwtConfiguration = builder.Configuration.GetSection("Jwt").Get<JWTConfiguration>();

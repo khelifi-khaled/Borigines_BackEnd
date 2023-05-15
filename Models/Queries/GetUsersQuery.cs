@@ -1,4 +1,4 @@
-﻿using Borigines.Provider.Sql.Models;
+﻿using Borigines.Models.Entities;
 using Models.Mappers;
 using System.Data;
 using Tools.CQRS.Queries;
@@ -8,6 +8,7 @@ namespace Models.Queries
 {
     public class GetUsersQuery : IQuery<IEnumerable<User>>
     {
+
     }
 
     public class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, IEnumerable<User>>

@@ -1,5 +1,5 @@
 ﻿
-namespace Borigines.Provider.Sql.Models
+namespace Borigines.Models.Entities
 {
 #nullable disable 
 
@@ -10,7 +10,9 @@ namespace Borigines.Provider.Sql.Models
         /// </summary>
         public Article()
         {
-
+            ContentFR = new();
+            ContentEN = new();
+            ContentNL = new();
         }
 
         /// <summary>
@@ -22,13 +24,15 @@ namespace Borigines.Provider.Sql.Models
         /// <param name="contents">List of content : always 3 Fr + En + Nl from Db</param>
         /// <param name="user">user article </param>
         /// <param name="picturs">list of </param>
-        public Article(int id, Category categoryArticle, DateTime date, User user, IEnumerable<Picture> pictures)
+        public Article(int id, Category categoryArticle, Content contentFr , Content contentEn, Content contentNl, DateTime date, User user)
         {
             Id = id;
             CategoryArticle = categoryArticle;
             Date = date;
             User = user;
-            Pictures = pictures;
+            ContentFR = contentFr;
+            ContentEN = contentEn;
+            ContentNL = contentNl;
         }
 
         public int Id { get; set; }
@@ -45,8 +49,7 @@ namespace Borigines.Provider.Sql.Models
 
         public Content ContentNL { get; set; }
 
-        public IEnumerable<Picture> Pictures { get; set; }
-
+      
 
 
     }//end class 

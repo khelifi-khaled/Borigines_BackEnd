@@ -1,6 +1,6 @@
 ﻿
 
-namespace Borigines.Provider.Sql.Models
+namespace Borigines.Models.Entities
 {
 
 #nullable disable
