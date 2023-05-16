@@ -110,5 +110,13 @@ namespace BiriginesAPI.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost("CheckEmail")]
+        public IActionResult CheckEmail(CheckEmailDTO dto)
+        {
+            bool IsEmailExist = _disptacher.Dispatch(new CheckEmailQuery(dto.EmailToCheck));
+            return Ok(new { IsEmailExist });
+        }
+
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Models.Commands;
 using Models.Queries;
 using Tools.CQRS;
-using Tools.CQRS.Commands;
 using CQRS = Tools.CQRS.Commands;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
