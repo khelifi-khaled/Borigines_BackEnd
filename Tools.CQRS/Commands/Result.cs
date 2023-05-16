@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Tools.CQRS.Commands
 {
     public class Result : IResult
     {
-        public static IResult Success()
+        public static IResult Success(string? message = null)
         {
-            return new Result(true);
+            return new Result(true, message);
         }
 
         public static IResult Failure(string message)

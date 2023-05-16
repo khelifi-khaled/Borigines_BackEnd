@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BiriginesAPI.DTO
 {
@@ -7,26 +8,22 @@ namespace BiriginesAPI.DTO
     public class CreateUserDTO
     {
         [Required]
-        [MaxLength(50)]
-        [MinLength(2)]
-
+        [StringLength(50, MinimumLength = 2)]
+        [JsonPropertyName("first_name")]
         public string  First_name { get; set; }
         [Required]
-        [MaxLength(50)]
-        [MinLength(2)]
+        [StringLength(50, MinimumLength = 2)]
+        [JsonPropertyName("last_name")]
         public string Last_name { get; set; }
         [Required]
-        [MaxLength(250)]
-        [MinLength(5)]
+        [StringLength(250, MinimumLength = 5)]
         [EmailAddress]
+        [JsonPropertyName("login")]
         public string Login { get; set; }
         [Required]
-        [MaxLength(20)]
-        [MinLength(8)]
+        [StringLength(20, MinimumLength = 8)]
+        [JsonPropertyName("password")]
         public string Password { get; set; }
-
-
-
 
     }//end class 
 }//end name space 

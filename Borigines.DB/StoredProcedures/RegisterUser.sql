@@ -16,6 +16,7 @@ BEGIN
 	SET @pwd_hash = HASHBYTES('SHA2_512', CONCAT(@salt,@key,@passwd,@salt))
 
 	INSERT INTO Users (First_name,Last_name,Login,Passwd,Salt)
+			   OUTPUT INSERTED.Id 
 			   VALUES (@first_name ,@last_name,@login ,@pwd_hash ,@salt)
 
 END 

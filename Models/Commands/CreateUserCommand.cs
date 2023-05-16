@@ -1,5 +1,4 @@
-﻿
-using System.Data;
+﻿using System.Data;
 using Tools.CQRS.Commands;
 using Tools.DataBase;
 
@@ -40,14 +39,14 @@ namespace Models.Commands
             try
             {
                 string sql = "RegisterUser";
-                _dbConnection.ExecuteNonQuery(sql, true, parameters: 
+                int? idUser = _dbConnection.ExecuteScalar(sql, true, parameters: 
                     new {
                         first_name = command.First_name , 
                         last_name = command.Last_name,
                         login = command.Login,
                         passwd = command.Password
-                    });
-                return Result.Success();
+                    }) as int?;
+                return Result.Success(idUser.ToString());
             }
             catch (Exception ex)
             {

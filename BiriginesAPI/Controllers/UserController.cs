@@ -60,22 +60,25 @@ namespace BiriginesAPI.Controllers
             User? u = _disptacher.Dispatch(new LoginUserQuery(dto.Login, dto.Password));
             if (u is null )
             {
-                return NotFound();
+                return NotFound(new {message = "User not exist in our Data Base"});
             }
+            
             return Ok(u);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost("PostUser")]
-        
         public IActionResult PostUser(CreateUserDTO dto)
         {
             CQRS.IResult result =
                 _disptacher.Dispatch(new CreateUserCommand(dto.First_name,dto.Last_name,dto.Login,dto.Password));
             if (result.IsSuccess)
-                return NoContent();
+            {
+                int.TryParse(result.Message,out int id);
+                return Ok(new { IdUserInserted = id });
+            }
 
-            return BadRequest(new { result.Message });
+            return BadRequest(new { message =  result.Message });
         }
 
         [Authorize(Roles = "Admin")]
@@ -88,9 +91,9 @@ namespace BiriginesAPI.Controllers
                     );
 
             if (result.IsSuccess)
-                return NoContent();
+                return Ok(new { message = "User Updated as well" });
 
-            return BadRequest(new { result.Message });
+            return BadRequest(new { message =  result.Message });
         }
 
 
@@ -101,9 +104,9 @@ namespace BiriginesAPI.Controllers
             CQRS.IResult result = _disptacher.Dispatch(new DeleteUserCommand(id));
             if(result.IsSuccess)
             {
-                return NoContent();
+                return Ok(new {message = $"User N° {id} hase been deleted"});
             }
-            return BadRequest(new { result.Message });
+            return BadRequest(new { message =  result.Message });
         }
 
 

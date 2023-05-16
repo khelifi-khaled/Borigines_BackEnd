@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BiriginesAPI.DTO
 {
@@ -8,11 +9,13 @@ namespace BiriginesAPI.DTO
     {
         [Required]
         [EmailAddress]
+        [JsonPropertyName("login")]
         public string Login { get; set; }
 
         [Required]
         [MaxLength(20)]
         [MinLength(8)]
+        [JsonPropertyName("password")]
         public string Password { get; set; }
 
     }
