@@ -99,6 +99,7 @@ namespace BiriginesAPI.Controllers
         
         }
 
+        //a modifier
         [HttpPost("PostPicsArtilce/{id}")]
         public async Task <IActionResult> PostPicsArtilce(int id ,[FromBody] UploadPicturesDOT dto)
         {
@@ -126,14 +127,14 @@ namespace BiriginesAPI.Controllers
             }
         }
 
-
+        //a modifier
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] string value)
         {
             return Ok(new { id , value });
         }
 
-       
+        //a modifier
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
