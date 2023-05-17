@@ -28,17 +28,18 @@ namespace BiriginesAPI.Controllers
 
 
         
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
+        [HttpGet("GetAllByCategory/{CategoryId}/{language}")]
+        public IActionResult GetAllByCategory(int CategoryId , string language)
         {
-            IEnumerable<Article> articles = _disptacher.Dispatch(new GetArticlesQuery()).ToList();
+            IEnumerable<Article> articles = _disptacher.Dispatch(
+                new GetArticlesByCategoryQuery(CategoryId,language));
 
-            if(articles is null)
+            if(!articles.Any())
             {
                 return NotFound(new { message  = "No Article Found in our Data Base"});
             }
 
-            return Ok(articles);
+            return Ok(articles.ToList());
         }
 
 
@@ -75,7 +76,7 @@ namespace BiriginesAPI.Controllers
 
             if (result.IsSuccess)
             {
-                int.TryParse(result.Message, out int Id);
+                _ = int.TryParse(result.Message, out int Id);
                 return Ok(new { IdArticleInserted = Id });
             }
             return BadRequest(new { message =  result.Message });
@@ -111,14 +112,16 @@ namespace BiriginesAPI.Controllers
 
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] string value)
         {
+            return Ok(new { id , value });
         }
 
        
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            return Ok(id);
         }
     }
 }

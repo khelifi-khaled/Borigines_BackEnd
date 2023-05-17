@@ -23,14 +23,14 @@ namespace Borigines.Models.Entities
         public Content(int id, string titel, string text)
         {
             Id = id;
-            Titel = titel;
+            Title = titel;
             Text = text;
         }
 
 
         public int Id { get; set; }
 
-        public string Titel { get; set; }
+        public string Title { get; set; }
 
         public string Text { get; set; }
 

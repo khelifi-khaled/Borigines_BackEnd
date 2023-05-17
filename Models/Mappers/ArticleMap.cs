@@ -14,17 +14,9 @@ namespace Models.Mappers
                     (int)record["catId"],
                     (string)record["catName_Category"]),
                 new Content(
-                    (int)record["frId"], 
-                    (string)record["frTitel"],
-                    (string)record["frContent"]),
-                new Content(
-                    (int)record["enId"],
-                    (string)record["enTitel"], 
-                    (string)record["enContent"]),
-                new Content(
-                    (int)record["nlId"],
-                    (string)record["nlTitel"],
-                    (string)record["nlContent"]), 
+                    (int)record["Id"], 
+                    (string)record["Title"],
+                    (string)record["Text"]),
                 (DateTime)record["artDate_Article"],
                 new User(
                     (int)record["uId"], 

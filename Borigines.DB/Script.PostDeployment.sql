@@ -38,7 +38,7 @@ INSERT INTO Categorys (Name_Category) VALUES
             (N'soirée') ,
             (N'presse');
 
-INSERT INTO Albums (Titel , Date_Album , Id_user ) VALUES 
+INSERT INTO Albums (Title , Date_Album , Id_user ) VALUES 
             (N'Albums Titel 1','12/05/2023',1),
             (N'Albums Titel 2','12/05/2023',1),
             (N'Albums Titel 3','12/05/2023',1);
@@ -52,19 +52,19 @@ INSERT INTO Album_Picture (FK_Picture,FK_Album) VALUES
             (5,2);
 
 
-INSERT INTO Content_fr (Titel,Content) VALUES 
+INSERT INTO Content_fr (Title,Content) VALUES 
             (N'content fr titel 1',N'content fr content 1'),
             (N'content fr titel 2',N'content fr content 2'),
             (N'content fr titel 3',N'content fr content 3');
 
 
-INSERT INTO Content_en (Titel,Content) VALUES 
+INSERT INTO Content_en (Title,Content) VALUES 
             (N'content en titel 1',N'content en content 1'),
             (N'content en titel 2',N'content en content 2'),
             (N'content en titel 3',N'content en content 3');
 
 
-INSERT INTO Content_nl (Titel,Content) VALUES 
+INSERT INTO Content_nl (Title,Content) VALUES 
             (N'content nl titel 1',N'content nl content 1'),
             (N'content nl titel 2',N'content nl content 2'),
             (N'content nl titel 3',N'content nl content 3');

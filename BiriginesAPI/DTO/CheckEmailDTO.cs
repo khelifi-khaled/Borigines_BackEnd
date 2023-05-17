@@ -2,6 +2,8 @@
 
 namespace BiriginesAPI.DTO
 {
+#nullable disable 
+
     public class CheckEmailDTO
     {
         [Required]

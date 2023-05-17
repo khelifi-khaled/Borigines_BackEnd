@@ -7,49 +7,41 @@ namespace Tools.DataBase
     {
         public static int ExecuteNonQuery(this IDbConnection dbConnection, string query, bool isStoredProcedure = false, object? parameters = null)
         {
-            using (IDbCommand command = CreateCommand(dbConnection, query, isStoredProcedure, parameters))
+            using IDbCommand command = CreateCommand(dbConnection, query, isStoredProcedure, parameters);
+            if (dbConnection.State != ConnectionState.Open)
             {
-                if (dbConnection.State != ConnectionState.Open)
-                {
-                    dbConnection.Open();
-                }
-
-                return command.ExecuteNonQuery();
+                dbConnection.Open();
             }
+
+            return command.ExecuteNonQuery();
         }
 
         public static object? ExecuteScalar(this IDbConnection dbConnection, string query, bool isStoredProcedure = false, object? parameters = null)
         {
-            using (IDbCommand command = CreateCommand(dbConnection, query, isStoredProcedure, parameters))
+            using IDbCommand command = CreateCommand(dbConnection, query, isStoredProcedure, parameters);
+            if (dbConnection.State != ConnectionState.Open)
             {
-                if (dbConnection.State != ConnectionState.Open)
-                {
-                    dbConnection.Open();
-                }
-
-                object? result = command.ExecuteScalar();
-                return result is DBNull ? null : result;
+                dbConnection.Open();
             }
+
+            object? result = command.ExecuteScalar();
+            return result is DBNull ? null : result;
         }
 
         public static IEnumerable<TResult> ExecuteReader<TResult>(this IDbConnection dbConnection , string query, Func<IDataRecord, TResult> mapper, bool isStoredProcedure = false, object? parameters = null)
         {
             ArgumentNullException.ThrowIfNull(nameof(mapper));
 
-            using (IDbCommand command = CreateCommand(dbConnection, query, isStoredProcedure, parameters))
+            using IDbCommand command = CreateCommand(dbConnection, query, isStoredProcedure, parameters);
+            if (dbConnection.State != ConnectionState.Open)
             {
-                if (dbConnection.State != ConnectionState.Open)
-                {
-                    dbConnection.Open();
-                }
+                dbConnection.Open();
+            }
 
-                using (IDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        yield return mapper(reader);
-                    }
-                }
+            using IDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                yield return mapper(reader);
             }
         }
 

@@ -10,9 +10,8 @@ namespace Borigines.Models.Entities
         /// </summary>
         public Article()
         {
-            ContentFR = new();
-            ContentEN = new();
-            ContentNL = new();
+            Content Content = new();
+
         }
 
         /// <summary>
@@ -24,15 +23,14 @@ namespace Borigines.Models.Entities
         /// <param name="contents">List of content : always 3 Fr + En + Nl from Db</param>
         /// <param name="user">user article </param>
         /// <param name="picturs">list of </param>
-        public Article(int id, Category categoryArticle, Content contentFr , Content contentEn, Content contentNl, DateTime date, User user)
+        public Article(int id, Category categoryArticle, Content content , DateTime date, User user)
         {
             Id = id;
             CategoryArticle = categoryArticle;
             Date = date;
             User = user;
-            ContentFR = contentFr;
-            ContentEN = contentEn;
-            ContentNL = contentNl;
+            Content = content;
+
         }
 
         public int Id { get; set; }
@@ -43,14 +41,7 @@ namespace Borigines.Models.Entities
 
         public User User { get; set; }
 
-        public Content ContentFR { get; set; }
-
-        public Content ContentEN { get; set; }
-
-        public Content ContentNL { get; set; }
-
-      
-
+        public Content Content { get; set; }
 
     }//end class 
 }//end name space 
