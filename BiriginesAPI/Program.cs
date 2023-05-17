@@ -62,6 +62,12 @@ app.UseAuthentication();
 
 
 
+
+
+app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

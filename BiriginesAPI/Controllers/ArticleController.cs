@@ -6,7 +6,6 @@ using Models.Queries;
 using Tools.CQRS;
 using CQRS = Tools.CQRS.Commands;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BiriginesAPI.Controllers
 {
