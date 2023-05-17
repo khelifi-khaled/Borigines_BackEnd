@@ -1,4 +1,5 @@
 ﻿using BiriginesAPI.DTO;
+using BiriginesAPI.Mappers;
 using Borigines.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Models.Commands;
@@ -27,7 +28,7 @@ namespace BiriginesAPI.Controllers
         }
 
 
-        
+        //test ok 
         [HttpGet("GetAllByCategory/{CategoryId}/{language}")]
         public IActionResult GetAllByCategory(int CategoryId , string language)
         {
@@ -38,28 +39,43 @@ namespace BiriginesAPI.Controllers
             {
                 return NotFound(new { message  = "No Article Found in our Data Base"});
             }
+            IEnumerable<GetArticlesByCategoryDTO> Dtos = 
+                articles.Select(a => a.ToDtoGetArticlesByCategory());
 
-            return Ok(articles.ToList());
+            return Ok(Dtos.ToList());
         }
 
 
         
-        
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        //test ok 
+        [HttpGet("GetArticleById/{id}/{language}")]
+        public IActionResult GetArticleById(int id , string language)
         {
-            Article article = _disptacher.Dispatch(new GetArticleQuery(id));
+            //geting my art from DB 
+            Article? article = _disptacher.Dispatch(new GetArticleQuery(id,language));
+
             if(article is null )
             {
-                return NotFound(new { message = $" Article N° {id} Found in our Data Base" });
+                return NotFound(new { message = $" Article N° {id} not found in our Data Base" });
             }
+            //geting my pics art infos from DB 
             IEnumerable < Picture >? pics = _disptacher.Dispatch(new GetArticlePicturesQuery(id));
-            GetArticleDTO DTOtoSend = new(article , pics); 
+            //maping my infos from db to my dto to send 
+            GetArticleByIdDTO? DTOtoSend =
+                new(article.Id,
+                article.User.Id,
+                article.User.Last_name,
+                article.User.First_name,
+                article.Date,
+                article.CategoryArticle.Id,
+                article.Content.Title,
+                article.Content.Text,
+                pics);
            
             return Ok(DTOtoSend);
         }
 
-        
+        //a modifier
         [HttpPost("PostArtilce")]
         public IActionResult PostArtilce([FromBody] CreateArticleDTO dto)
         {

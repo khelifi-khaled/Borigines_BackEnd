@@ -34,12 +34,9 @@ namespace Models.Queries
 
         public IEnumerable<Article>? Execute(GetArticlesByCategoryQuery query)
         {
-            string sql = "" ;
-
-            switch(query.Language)
+            string sql = query.Language switch
             {
-                case "FR":
-                       sql = @"SELECT	art.id as artId ,
+                "FR" => @"SELECT	art.id as artId ,
 									art.Date_Article as  artDate_Article ,
 									art.Fk_category_id as artFk_category_id,
 									art.FK_id_user as artFK_id_user,
@@ -60,10 +57,8 @@ namespace Models.Queries
 									FROM Articles art JOIN Users u  
 									ON art.FK_id_user = u.Id JOIN Categorys  cat 
 									ON  cat.Id = art.Fk_category_id JOIN Content_fr fr 
-									ON fr.Id = art.FK_content_fr  WHERE cat.id  = @CategoryId ;";
-                    break;
-                case "NL":
-                    sql = @"SELECT	art.id as artId ,
+									ON fr.Id = art.FK_content_fr  WHERE cat.id  = @CategoryId ;",
+                "NL" => @"SELECT	art.id as artId ,
 									art.Date_Article as  artDate_Article ,
 									art.Fk_category_id as artFk_category_id,
 									art.FK_id_user as artFK_id_user,
@@ -83,10 +78,8 @@ namespace Models.Queries
 									FROM Articles art JOIN Users u  
 									ON art.FK_id_user = u.Id JOIN Categorys  cat 
 									ON  cat.Id = art.Fk_category_id JOIN Content_nl nl 
-									ON nl.Id = art.FK_content_fr  WHERE cat.id  = @CategoryId ;";
-                    break;
-                default:
-					sql = @"SELECT	art.id as artId ,
+									ON nl.Id = art.FK_content_fr  WHERE cat.id  = @CategoryId ;",
+                _ => @"SELECT	art.id as artId ,
 									art.Date_Article as  artDate_Article ,
 									art.Fk_category_id as artFk_category_id,
 									art.FK_id_user as artFK_id_user,
@@ -106,10 +99,8 @@ namespace Models.Queries
 									FROM Articles art JOIN Users u  
 									ON art.FK_id_user = u.Id JOIN Categorys  cat 
 									ON  cat.Id = art.Fk_category_id JOIN Content_en en 
-									ON en.Id = art.FK_content_fr  WHERE cat.id  = @CategoryId ;";
-                    break;
-            }
-
+									ON en.Id = art.FK_content_fr  WHERE cat.id  = @CategoryId ;",
+            };
             return _dbConnection.ExecuteReader(sql, dr => dr.ToArticle(),parameters : new { query.CategoryId });
 
         }//end Execute
