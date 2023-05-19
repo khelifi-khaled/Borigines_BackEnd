@@ -39,10 +39,11 @@ namespace Models.Queries
 									art.Fk_category_id as artFk_category_id,
 									art.FK_id_user as artFK_id_user,
 									art.FK_content_fr as artFK_content_fr ,
+
 									cat.id as catId , 
 									cat.Name_Category as catName_Category , 
+
 									fr.id  as Id, 
-									fr.Title as Title,
 									fr.Title as Title,
 									fr.Content as Text,
 									
@@ -62,9 +63,11 @@ namespace Models.Queries
 									art.Date_Article as  artDate_Article ,
 									art.Fk_category_id as artFk_category_id,
 									art.FK_id_user as artFK_id_user,
-									art.FK_content_fr as artFK_content_fr ,
+									art.FK_content_nl as artFK_content ,
+
 									cat.id as catId , 
 									cat.Name_Category as catName_Category , 
+
 									nl.id  as Id, 
 									nl.Title as Title,
 									nl.Content as Text,
@@ -78,16 +81,18 @@ namespace Models.Queries
 									FROM Articles art JOIN Users u  
 									ON art.FK_id_user = u.Id JOIN Categorys  cat 
 									ON  cat.Id = art.Fk_category_id JOIN Content_nl nl 
-									ON nl.Id = art.FK_content_fr  
+									ON nl.Id = art.FK_content_nl  
 									WHERE art.id  = @Id ;",
 
                 _ => @"SELECT	art.id as artId ,
 									art.Date_Article as  artDate_Article ,
 									art.Fk_category_id as artFk_category_id,
 									art.FK_id_user as artFK_id_user,
-									art.FK_content_fr as artFK_content_fr ,
+									art.FK_content_en as artFK_content ,
+
 									cat.id as catId , 
-									cat.Name_Category as catName_Category , 
+									cat.Name_Category as catName_Category ,
+
 									en.id  as Id, 
 									en.Title as Title,
 									en.Content as Text,
@@ -101,11 +106,11 @@ namespace Models.Queries
 									FROM Articles art JOIN Users u  
 									ON art.FK_id_user = u.Id JOIN Categorys  cat 
 									ON  cat.Id = art.Fk_category_id JOIN Content_en en 
-									ON en.Id = art.FK_content_fr 
+									ON en.Id = art.FK_content_en 
 									WHERE  art.id  = @Id ;",
             };
 
-            return _dbConnection.ExecuteReader(sql, dr => dr.ToArticle() , parameters : new { Id = query.Id }).FirstOrDefault();
+            return _dbConnection.ExecuteReader(sql, dr => dr.ToArticle() , parameters : new {  query.Id }).SingleOrDefault();
         }//end Execute
 
 

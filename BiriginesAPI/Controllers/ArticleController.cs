@@ -75,6 +75,37 @@ namespace BiriginesAPI.Controllers
             return Ok(DTOtoSend);
         }
 
+        
+        [HttpGet("GetArticleByIdEdit/{id}")]
+        public IActionResult GetArticleByIdEdit(int id)
+        {
+            Article? art = _disptacher.Dispatch(new GetArticleForEditeQuery(id));
+            if(art is null)
+            {
+                return NotFound();
+            }
+            IEnumerable<Picture>? pics = _disptacher.Dispatch(new GetArticlePicturesQuery(id));
+            //mapping 
+            GetArticleForEditeDTO DtoToSend = 
+                new( art.Id,
+                     art.User.Id,
+                     art.User.Last_name,
+                     art.User.First_name,
+                     art.Date,
+                     art.CategoryArticle.Id,
+                     art.Content.Title,
+                     art.Content.Text,
+                     art.ContentEn.Title,
+                     art.ContentEn.Text,
+                     art.ContentNl.Title,
+                     art.ContentNl.Text,
+                     pics);
+            //geting my pics art infos from DB 
+           
+
+            return Ok(DtoToSend);
+        }
+
         //a modifier
         [HttpPost("PostArtilce")]
         public IActionResult PostArtilce([FromBody] CreateArticleDTO dto)

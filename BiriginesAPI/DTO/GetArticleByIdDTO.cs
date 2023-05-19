@@ -19,21 +19,21 @@ namespace BiriginesAPI.DTO
             Pictures = pictures;
         }
 
-        public int Id { get; set; }
+        public int Id { get; init; }
 
-        public int IdUser { get; set; }
+        public int IdUser { get; init; }
 
-        public string UserLastName { get; set; }
+        public string UserLastName { get; init; }
 
-        public string UserFirstName { get; set; }
+        public string UserFirstName { get; init; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; init; }
 
-        public int IdCategory { get; set; }
+        public int IdCategory { get; init; }
 
-        public string Title { get; set; }
+        public string Title { get; init; }
 
-        public string Content { get; set; }
+        public string Content { get; init; }
 
         public IEnumerable<Picture> Pictures { get; init; }
 

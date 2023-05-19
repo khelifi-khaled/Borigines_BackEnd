@@ -74,7 +74,7 @@ namespace BiriginesAPI.Controllers
                 _disptacher.Dispatch(new CreateUserCommand(dto.First_name,dto.Last_name,dto.Login,dto.Password));
             if (result.IsSuccess)
             {
-                int.TryParse(result.Message,out int id);
+                _ = int.TryParse(result.Message, out int id);
                 return Ok(new { IdUserInserted = id });
             }
 

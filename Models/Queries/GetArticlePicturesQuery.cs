@@ -40,7 +40,7 @@ namespace Models.Queries
                                   FROM Article_Picture JOIN Picture 
                                   ON FK_Picture = Id WHERE FK_Article = @Id ;";
 
-            IEnumerable<Picture> pics = _dbConnection.ExecuteReader(sql, dr => dr.ToPicture(), parameters: query).ToList();
+            IEnumerable<Picture> pics = _dbConnection.ExecuteReader(sql, dr => dr.ToPicture(), parameters: query ).ToList();
 
             foreach(Picture item in pics)
             {

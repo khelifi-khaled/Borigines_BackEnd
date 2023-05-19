@@ -32,7 +32,7 @@ namespace Models.Queries
         public User? Execute(LoginUserQuery query)
         {
             string sql = "LoginUser";
-            return _dbConnection.ExecuteReader(sql,dr => dr.ToUser(),true, new { login = query.Login, pwd = query.Password}).FirstOrDefault();
+            return _dbConnection.ExecuteReader(sql,dr => dr.ToUser(),true, new { login = query.Login, pwd = query.Password}).SingleOrDefault();
         }
     }
 
