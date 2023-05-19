@@ -117,7 +117,7 @@ namespace BiriginesAPI.Controllers
                 CQRS.IResult result = _disptacher.Dispatch(new CreatePictureCommand(id, fileName));
                 if (result.IsSuccess)
                 {
-                    return Ok(new { message = result.Message });
+                    return Ok();
                 }
                 return BadRequest(new { message = result.Message});
             }

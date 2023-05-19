@@ -41,7 +41,7 @@ namespace Models.Commands
 
                 _dbconnection.ExecuteNonQuery(sql, parameters: new { FK_Picture, command.FK_Article });
 
-                return Result.Success($"Picture N° {FK_Picture} hase been inserted Successfully !");
+                return Result.Success();
             }
             catch (Exception ex)
             {
