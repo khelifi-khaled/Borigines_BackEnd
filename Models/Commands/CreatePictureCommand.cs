@@ -1,7 +1,7 @@
-﻿using System.Data;
+﻿using Microsoft.AspNetCore.Http;
+using System.Data;
 using Tools.CQRS.Commands;
 using Tools.DataBase;
-
 namespace Models.Commands
 {
     public class CreatePictureCommand : ICommand
@@ -21,10 +21,12 @@ namespace Models.Commands
     public class CreatePictureCommandHandler : ICommandHandler<CreatePictureCommand>
     {
         private readonly IDbConnection _dbconnection;
+        private readonly IHttpContextAccessor _contex;
 
-        public CreatePictureCommandHandler(IDbConnection dbConnection)
+        public CreatePictureCommandHandler(IDbConnection dbConnection, IHttpContextAccessor contex)
         {
             _dbconnection = dbConnection;
+            _contex = contex;
         }
 
         public IResult Execute(CreatePictureCommand command)
@@ -41,7 +43,9 @@ namespace Models.Commands
 
                 _dbconnection.ExecuteNonQuery(sql, parameters: new { FK_Picture, command.FK_Article });
 
-                return Result.Success();
+                string url = _contex.HttpContext!.Request.Scheme + "://" + _contex.HttpContext!.Request.Host.Value + "/Images/" + command.Name_picture; 
+
+                return Result.Success(url);
             }
             catch (Exception ex)
             {

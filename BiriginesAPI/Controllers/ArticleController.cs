@@ -131,8 +131,8 @@ namespace BiriginesAPI.Controllers
         }
 
         //a modifier
-        [HttpPost("PostPicsArtilce/{id}")]
-        public async Task <IActionResult> PostPicsArtilce(int id ,[FromBody] UploadPicturesDOT dto)
+        [HttpPost("PostPicArtilce/{id}")]
+        public async Task <IActionResult> PostPicArtilce(int id ,[FromBody] UploadPicturesDOT dto)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace BiriginesAPI.Controllers
                 CQRS.IResult result = _disptacher.Dispatch(new CreatePictureCommand(id, fileName));
                 if (result.IsSuccess)
                 {
-                    return Ok();
+                    return Ok(new { ImageUrl = result.Message });
                 }
                 return BadRequest(new { message = result.Message});
             }
@@ -160,9 +160,10 @@ namespace BiriginesAPI.Controllers
 
         //a modifier
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] UpdateAtricleDTO Dto)
         {
-            return Ok(new { id , value });
+
+            return Ok();
         }
 
         //a modifier
