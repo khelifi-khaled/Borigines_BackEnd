@@ -7,12 +7,10 @@ namespace Borigines.Models.Entities
     public class Album
     {
         /// <summary>
-        /// ctor for my new album, Emplty : UserAlbum +  Picturs List , Date = DateTime.Now
+        /// ctor for my new album, Date = DateTime.Now
         /// </summary>
         public Album()
         {
-            UserAlbum = new();
-            Pictures = new List<Picture>();
             Date = DateTime.Now;
         }
 
@@ -30,7 +28,6 @@ namespace Borigines.Models.Entities
             Titel = titel;
             Date = date;
             UserAlbum = userAlbum;
-            Pictures = new List<Picture>();
         }
 
 
@@ -43,7 +40,6 @@ namespace Borigines.Models.Entities
 
         public User UserAlbum { get; set; }
 
-        public IEnumerable<Picture> Pictures { get; set; }
 
     }//end class
 }//end name space 
