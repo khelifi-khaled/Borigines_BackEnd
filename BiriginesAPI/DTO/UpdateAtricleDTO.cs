@@ -7,12 +7,10 @@ namespace BiriginesAPI.DTO
 
     public class UpdateAtricleDTO
     {
-
+  
         [Required]
         [JsonPropertyName("category_id")]
         public int CategoryId { get; set; }
-
-
 
         [Required]
         [StringLength(100, MinimumLength = 5)]

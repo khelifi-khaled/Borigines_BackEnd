@@ -8,6 +8,8 @@ using Tools.CQRS;
 using CQRS = Tools.CQRS.Commands;
 
 
+
+
 namespace BiriginesAPI.Controllers
 {
 
@@ -130,9 +132,9 @@ namespace BiriginesAPI.Controllers
         
         }
 
-        //a modifier
-        [HttpPost("PostPicArtilce/{id}")]
-        public async Task <IActionResult> PostPicArtilce(int id ,[FromBody] UploadPicturesDOT dto)
+        //no test 
+        [HttpPost("PostPicture/{id}")]
+        public async Task <IActionResult> PostPicture(int id ,[FromBody] UploadPicturesDOT dto)
         {
             try
             {
@@ -158,15 +160,62 @@ namespace BiriginesAPI.Controllers
             }
         }
 
-        //a modifier
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateAtricleDTO Dto)
+        //test ok 
+        [HttpPut("UpdateArticle/{id}")]
+        public IActionResult UpdateArticle(int id, [FromBody] UpdateAtricleDTO Dto)
         {
+            CQRS.IResult result = _disptacher.Dispatch(
+                new UpdateArticleCommand(
+                    id,
+                    Dto.CategoryId,
+                    Dto.TitelFr,
+                    Dto.TitelEn,
+                    Dto.TitelNl,
+                    Dto.ContentFr,
+                    Dto.ContentEn,
+                    Dto.ContentNl
+                    )
+                );
 
-            return Ok();
+            if(result.IsSuccess)
+            {
+                return Ok(); 
+            }
+            return BadRequest(new {message = result.Message});
         }
 
-        //a modifier
+        [HttpDelete("DeletePicture/{id}")]
+        public IActionResult DeletePicture(int id ,DeletePictureDTO dto)
+        {
+            CQRS.IResult result = _disptacher.Dispatch(new DeletePictureCommand(id,dto.Name_Picture));
+            
+            //if somthing wrong so i will return Bad req 
+            if(!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                //geting pic path 
+                string path = Path.Combine(_env.WebRootPath, "Images/", dto.Name_Picture);
+                //if my pic don't exists on server 
+                if (!System.IO.File.Exists(path))
+                {
+                    return NotFound();
+                }
+                //delete pic from server 
+                System.IO.File.Delete(path);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        //no test 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
