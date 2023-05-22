@@ -53,7 +53,7 @@ namespace Models.Commands
         {
             try
             {
-                string sql = @"INSERT INTO Content_fr  (Titel, Content)  OUTPUT INSERTED.Id
+                string sql = @"INSERT INTO Content_fr  (Title, Content)  OUTPUT INSERTED.Id
                                                 VALUES (@TitelFr , @ContentFr)";
                 int? IdContentFr = _dbconnection.ExecuteScalar(sql, parameters: new
                 {
@@ -61,7 +61,7 @@ namespace Models.Commands
                     command.ContentFr,
                 }) as int?;
 
-                sql = @"INSERT INTO Content_nl  (Titel, Content) OUTPUT INSERTED.Id
+                sql = @"INSERT INTO Content_nl  (Title, Content) OUTPUT INSERTED.Id
                                          VALUES (@TitelNl , @ContentNl)";
                 int? IdContentNl = _dbconnection.ExecuteScalar(sql, parameters: new
                 {
@@ -69,7 +69,7 @@ namespace Models.Commands
                     command.ContentNl,
                 }) as int?;
 
-                sql = @"INSERT INTO Content_en (Titel, Content) OUTPUT INSERTED.Id
+                sql = @"INSERT INTO Content_en (Title, Content) OUTPUT INSERTED.Id
                                         VALUES (@TitelEn , @ContentEn)";
                 int? IdContentEn = _dbconnection.ExecuteScalar(sql, parameters: new
                 {
