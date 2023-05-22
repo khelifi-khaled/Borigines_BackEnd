@@ -77,7 +77,7 @@ namespace BiriginesAPI.Controllers
             return Ok(DTOtoSend);
         }
 
-        
+        //test ok 
         [HttpGet("GetArticleByIdEdit/{id}")]
         public IActionResult GetArticleByIdEdit(int id)
         {
@@ -108,9 +108,9 @@ namespace BiriginesAPI.Controllers
             return Ok(DtoToSend);
         }
 
-        //a modifier
-        [HttpPost("PostArtilce")]
-        public IActionResult PostArtilce([FromBody] CreateArticleDTO dto)
+        //test ok 
+        [HttpPost("PostArticle")]
+        public IActionResult PostArticle([FromBody] CreateArticleDTO dto)
         {
             CQRS.IResult result =
                 _disptacher.Dispatch(new CreateArticleCommand(
@@ -184,14 +184,14 @@ namespace BiriginesAPI.Controllers
             return BadRequest(new {message = result.Message});
         }
 
-        //no test 
+        //test ok 
         [HttpDelete("DeletePicture/{id}")]
         public IActionResult DeletePicture(int id ,DeletePictureDTO dto)
         {
             CQRS.IResult result = _disptacher.Dispatch(new DeletePictureCommand(id,dto.Name_Picture));
 
             //If somthing wrong so i will return Bad request 
-            if (!result.IsSuccess)
+            if (result.IsFailure)
             {
                 return BadRequest();
             }
@@ -216,12 +216,18 @@ namespace BiriginesAPI.Controllers
             }
         }
 
-        //no test 
+        //test ok 
         [HttpDelete("DeleteArticleInfos/{id}")]
         public IActionResult DeleteArticleInfos(int id)
         {
+            CQRS.IResult result = _disptacher.Dispatch(new DeleteArticleInfosCommand(id));
+           
+            if (result.IsFailure)
+            {
+                return BadRequest();
+            }
 
-            return Ok(id);
+            return Ok();
         }
     }
 }

@@ -42,13 +42,15 @@ namespace Models.Commands
                 {
                     return Result.Failure("Picture to delete not found");
                 }
+                //delete pic from Article_Picture
+                sql = "DELETE FROM Article_Picture WHERE FK_Picture = @id AND FK_Article = @IdArt ; ";
+                _dbConnection.ExecuteNonQuery(sql, parameters: new { pictureToDelete.Id, command.IdArt });
+
                 //delete pic from Picture table on DB 
                 sql = "DELETE FROM Picture WHERE Id = @Id";
                 _dbConnection.ExecuteNonQuery(sql, parameters: new { pictureToDelete.Id });
 
-                //delete pic from Article_Picture
-                sql = "DELETE FROM Article_Picture WHERE FK_Picture = @id AND FK_Article = @IdArt ; ";
-                _dbConnection.ExecuteNonQuery(sql, parameters: new { pictureToDelete.Id, command.IdArt });
+                
 
                 return Result.Success();
             }
