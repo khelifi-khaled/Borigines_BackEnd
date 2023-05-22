@@ -184,13 +184,14 @@ namespace BiriginesAPI.Controllers
             return BadRequest(new {message = result.Message});
         }
 
+        //no test 
         [HttpDelete("DeletePicture/{id}")]
         public IActionResult DeletePicture(int id ,DeletePictureDTO dto)
         {
             CQRS.IResult result = _disptacher.Dispatch(new DeletePictureCommand(id,dto.Name_Picture));
-            
-            //if somthing wrong so i will return Bad req 
-            if(!result.IsSuccess)
+
+            //If somthing wrong so i will return Bad request 
+            if (!result.IsSuccess)
             {
                 return BadRequest();
             }
@@ -216,9 +217,10 @@ namespace BiriginesAPI.Controllers
         }
 
         //no test 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpDelete("DeleteArticleInfos/{id}")]
+        public IActionResult DeleteArticleInfos(int id)
         {
+
             return Ok(id);
         }
     }
