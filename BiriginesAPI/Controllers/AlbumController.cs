@@ -2,8 +2,10 @@
 using BiriginesAPI.Mappers;
 using Borigines.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Models.Commands;
 using Models.Queries;
 using Tools.CQRS;
+using CQRS = Tools.CQRS.Commands;
 
 
 
@@ -33,7 +35,7 @@ namespace BiriginesAPI.Controllers
             //maping 
             IEnumerable<GetAllAlbumsDTO> dtos = albums.Select(a => a.ToGetAllAlbumsDTO()).ToList();
 
-            //injuction of pics in Albums 
+            //Injection of pics in Albums 
             foreach (GetAllAlbumsDTO item in dtos )
             {
                 item.Pictures = _disptacher.Dispatch(new GetAlbumPicturesQuery(item.AlbumId)).ToList();
@@ -43,22 +45,22 @@ namespace BiriginesAPI.Controllers
         }
 
         
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPost("PostAlbum")]
+        public IActionResult PostAlbum(CreateAlbumDTO dto)
         {
-            return "value";
-        }
-
-        
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
+            CQRS.IResult result = _disptacher.Dispatch(new CreateAlbumCommand(dto.Title, dto.UserId));
+            if(result.IsFailure)
+            {
+                return BadRequest();
+            }
+            return Ok(new { IdAlbumInserted = result.Message });
         }
 
         
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+
         }
 
         
