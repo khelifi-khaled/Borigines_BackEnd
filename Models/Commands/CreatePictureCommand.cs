@@ -37,6 +37,7 @@ namespace Models.Commands
                 int? FK_Picture = _dbconnection.ExecuteScalar(sql, parameters: new
                 {
                     command.Name_picture
+
                 }) as int?;
 
                 sql = "INSERT INTO Article_Picture (FK_Article , FK_Picture) VALUES (@FK_Article , @FK_Picture)";
@@ -53,8 +54,9 @@ namespace Models.Commands
                 return Result.Failure(ex.Message);
             }
 
-        }
-    }
+        }//end Execute
+
+    }//end CreatePictureCommandHandler
 
 
 }//end name space 

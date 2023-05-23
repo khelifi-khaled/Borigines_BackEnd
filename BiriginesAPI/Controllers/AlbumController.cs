@@ -17,11 +17,14 @@ namespace BiriginesAPI.Controllers
     {
         private readonly IDisptacher _disptacher;
 
-        public AlbumController(IDisptacher disptacher)
+        private readonly IWebHostEnvironment _env;
+
+        public AlbumController(IDisptacher disptacher, IWebHostEnvironment env)
         {
             _disptacher = disptacher;
+            _env = env;
         }
-
+        //test ok 
         [HttpGet("GetAllAlbums")]
         public IActionResult GetAllAlbums()
         {
@@ -44,7 +47,7 @@ namespace BiriginesAPI.Controllers
             return Ok(dtos);
         }
 
-        
+        //test ok 
         [HttpPost("PostAlbum")]
         public IActionResult PostAlbum(CreateAlbumDTO dto)
         {
@@ -55,8 +58,67 @@ namespace BiriginesAPI.Controllers
             }
             return Ok(new { IdAlbumInserted = result.Message });
         }
+        //no test 
+        [HttpPost("PostPicture/{id}")]
+        public async Task<IActionResult> PostPicture(int id, [FromBody] UploadPicturesDOT dto)
+        {
+            try
+            {
+                _env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                using Stream stream = new MemoryStream(dto.ArticlePicture);
+                string fileName = Guid.NewGuid().ToString() + dto.FileName;
+                string path = Path.Combine(_env.WebRootPath, "Images/", fileName);
+                using FileStream stream2 = new(path, FileMode.Create);
 
-        
+                //await picture to server then i can insert my infos on my Data base 
+                await stream.CopyToAsync(stream2);
+
+                CQRS.IResult result = _disptacher.Dispatch(new CreatePictureAlbumCommand(id, fileName));
+
+                if (result.IsSuccess)
+                {
+                    return Ok(new { ImageUrl = result.Message });
+                }
+                return BadRequest(new { message = result.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        //test ok 
+        [HttpDelete("DeletePicture/{id}")]
+        public IActionResult DeletePicture(int id, DeletePictureDTO dto)
+        {
+            CQRS.IResult result = _disptacher.Dispatch(new DeletePictureAlbumCommand(id, dto.Name_Picture));
+
+            //If somthing wrong so i will return Bad request 
+            if (result.IsFailure)
+            {
+                return BadRequest(new { message = result.Message });
+            }
+            try
+            {
+                //geting pic path 
+                string path = Path.Combine(_env.WebRootPath, "Images/", dto.Name_Picture);
+                //if my pic don't exists on server 
+                if (!System.IO.File.Exists(path))
+                {
+                    return NotFound();
+                }
+                //delete pic from server 
+                System.IO.File.Delete(path);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
