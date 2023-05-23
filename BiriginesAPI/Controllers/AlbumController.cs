@@ -58,6 +58,7 @@ namespace BiriginesAPI.Controllers
             }
             return Ok(new { IdAlbumInserted = result.Message });
         }
+
         //no test 
         [HttpPost("PostPicture/{id}")]
         public async Task<IActionResult> PostPicture(int id, [FromBody] UploadPicturesDOT dto)
