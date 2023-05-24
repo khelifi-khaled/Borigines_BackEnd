@@ -120,16 +120,22 @@ namespace BiriginesAPI.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("PutAlbum/{id}")]
+        public IActionResult PutAlbum(int id, [FromBody] UpdateAlbumDTO dto)
         {
-
+            CQRS.IResult result = _disptacher.Dispatch(new UpdateAlbumCommand(dto.Title , id));
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Message);
+            }
+            return Ok();
         }
 
         
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
         }
     }
 }
