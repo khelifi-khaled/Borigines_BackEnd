@@ -132,10 +132,16 @@ namespace BiriginesAPI.Controllers
         }
 
         
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("DeleteAlbum/{id}")]
+        public IActionResult DeleteAlbum(int id)
         {
+            CQRS.IResult result = _disptacher.Dispatch(new DeleteAlbumCommand(id));
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Message);
+            }
 
+            return Ok();
         }
     }
 }
