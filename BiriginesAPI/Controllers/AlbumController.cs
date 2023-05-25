@@ -33,7 +33,7 @@ namespace BiriginesAPI.Controllers
             //if ther's nothing so return not found 
             if (albums is null || !albums.Any())
             {
-                return NotFound();
+                return NotFound(new { message = "No Album found in Data base " });
             }
             //maping 
             IEnumerable<GetAllAlbumsDTO> dtos = albums.Select(a => a.ToGetAllAlbumsDTO()).ToList();
@@ -54,7 +54,7 @@ namespace BiriginesAPI.Controllers
             CQRS.IResult result = _disptacher.Dispatch(new CreateAlbumCommand(dto.Title, dto.UserId));
             if(result.IsFailure)
             {
-                return BadRequest();
+                return BadRequest(new { message = result.Message });
             }
             return Ok(new { IdAlbumInserted = result.Message });
         }
@@ -106,7 +106,7 @@ namespace BiriginesAPI.Controllers
                 //if my pic don't exists on server 
                 if (!System.IO.File.Exists(path))
                 {
-                    return NotFound();
+                    return NotFound(new {message = "Picture not found"});
                 }
                 //delete pic from server 
                 System.IO.File.Delete(path);

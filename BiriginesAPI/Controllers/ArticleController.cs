@@ -39,7 +39,7 @@ namespace BiriginesAPI.Controllers
 
             if(!articles.Any())
             {
-                return NotFound(new { message  = "No Article Found in our Data Base"});
+                return NotFound(new { message  = "No Article found in our Data Base"});
             }
             IEnumerable<GetArticlesByCategoryDTO> Dtos = 
                 articles.Select(a => a.ToDtoGetArticlesByCategory());
@@ -84,7 +84,7 @@ namespace BiriginesAPI.Controllers
             Article? art = _disptacher.Dispatch(new GetArticleForEditeQuery(id));
             if(art is null)
             {
-                return NotFound();
+                return NotFound(new { message = $" Article N° {id} not found in our Data Base" });
             }
             IEnumerable<Picture>? pics = _disptacher.Dispatch(new GetArticlePicturesQuery(id));
             //mapping 
@@ -193,7 +193,7 @@ namespace BiriginesAPI.Controllers
             //If somthing wrong so i will return Bad request 
             if (result.IsFailure)
             {
-                return BadRequest();
+                return BadRequest(new { message = result.Message });
             }
             try
             {
@@ -202,7 +202,7 @@ namespace BiriginesAPI.Controllers
                 //if my pic don't exists on server 
                 if (!System.IO.File.Exists(path))
                 {
-                    return NotFound();
+                    return NotFound(new {message = "Picture not found"});
                 }
                 //delete pic from server 
                 System.IO.File.Delete(path);
@@ -224,10 +224,10 @@ namespace BiriginesAPI.Controllers
            
             if (result.IsFailure)
             {
-                return BadRequest();
+                return BadRequest( new {message = result.Message });
             }
 
-            return Ok();
+            return Ok(); 
         }
     }
 }
