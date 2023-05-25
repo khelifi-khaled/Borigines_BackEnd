@@ -50,7 +50,12 @@ namespace BiriginesAPI.Controllers
         
         public IActionResult Get()
         {
-            return Ok(_disptacher.Dispatch(new GetUsersQuery()).ToList());
+            IEnumerable<User>? users = _disptacher.Dispatch(new GetUsersQuery()).ToList();
+            if(users is null || !users.Any())
+            {
+                return NotFound(new {message = "No user found in our Data Base"});
+            }
+            return Ok(users);
         }
 
 
@@ -60,7 +65,7 @@ namespace BiriginesAPI.Controllers
             User? u = _disptacher.Dispatch(new LoginUserQuery(dto.Login, dto.Password));
             if (u is null )
             {
-                return NotFound(new {message = "User not exist in our Data Base"});
+                return NotFound(new {message = "You neet to check your informations please"});
             }
             
             return Ok(u);
