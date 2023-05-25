@@ -34,7 +34,7 @@ namespace BiriginesAPI.Controllers
             User? u = _disptacher.Dispatch(new LoginUserQuery(dto.Login, dto.Password));
             if (u is null)
             {
-                return NotFound();
+                return NotFound(new {message = "Token not found"});
             }
             return Ok(_token.GenerateToken(
                 new Claim(ClaimTypes.NameIdentifier, u.Id.ToString()),
