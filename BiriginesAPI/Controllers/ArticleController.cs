@@ -132,20 +132,19 @@ namespace BiriginesAPI.Controllers
         
         }
 
-        //no test 
+        // test ok  
         [HttpPost("PostPicture/{id}")]
-        public async Task <IActionResult> PostPicture(int id ,[FromBody] UploadPicturesDOT dto)
+        public async Task <IActionResult> PostPicture (int id , [FromForm] UploadPicturesDOT dto)
         {
             try
             {
                 _env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                using Stream stream = new MemoryStream(dto.ArticlePicture);
-                string fileName = Guid.NewGuid().ToString() + dto.FileName;
+                
+                string fileName = Guid.NewGuid().ToString() + dto.PhotoFile.FileName;
                 string path = Path.Combine(_env.WebRootPath, "Images/", fileName);
-                using FileStream stream2 = new(path, FileMode.Create);
+                using FileStream stream = new (path, FileMode.Create);
 
-                //await picture to server then i can insert my infos on my Data base 
-                await stream.CopyToAsync(stream2);
+                await dto.PhotoFile.CopyToAsync(stream);
 
                 CQRS.IResult result = _disptacher.Dispatch(new CreatePictureCommand(id, fileName));
                 if (result.IsSuccess)
@@ -179,7 +178,7 @@ namespace BiriginesAPI.Controllers
 
             if(result.IsSuccess)
             {
-                return Ok(); 
+                return Ok(new { message = result.Message }); 
             }
             return BadRequest(new {message = result.Message});
         }
@@ -207,7 +206,7 @@ namespace BiriginesAPI.Controllers
                 //delete pic from server 
                 System.IO.File.Delete(path);
 
-                return Ok();
+                return Ok(new { message = $"{dto.Name_Picture} hase been deleted from server !" });
             }
             catch (Exception ex)
             {

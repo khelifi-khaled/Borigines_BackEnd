@@ -90,7 +90,7 @@ namespace Models.Commands
                       
                        
                     });
-                return Result.Success();
+                return Result.Success("Article updated !");
             }
             catch (Exception ex )
             {

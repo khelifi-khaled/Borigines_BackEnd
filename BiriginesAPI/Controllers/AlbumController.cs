@@ -59,34 +59,34 @@ namespace BiriginesAPI.Controllers
             return Ok(new { IdAlbumInserted = result.Message });
         }
 
-        //no test 
-        [HttpPost("PostPicture/{id}")]
-        public async Task<IActionResult> PostPicture(int id, [FromBody] UploadPicturesDOT dto)
-        {
-            try
-            {
-                _env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                using Stream stream = new MemoryStream(dto.ArticlePicture);
-                string fileName = Guid.NewGuid().ToString() + dto.FileName;
-                string path = Path.Combine(_env.WebRootPath, "Images/", fileName);
-                using FileStream stream2 = new(path, FileMode.Create);
+        ////no test 
+        //[HttpPost("PostPicture/{id}")]
+        //public async Task<IActionResult> PostPicture(int id, [FromBody] UploadPicturesDOT dto)
+        //{
+        //    try
+        //    {
+        //        _env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+        //        using Stream stream = new MemoryStream(dto.ArticlePicture);
+        //        string fileName = Guid.NewGuid().ToString() + dto.FileName;
+        //        string path = Path.Combine(_env.WebRootPath, "Images/", fileName);
+        //        using FileStream stream2 = new(path, FileMode.Create);
 
-                //await picture to server then i can insert my infos on my Data base 
-                await stream.CopyToAsync(stream2);
+        //        //await picture to server then i can insert my infos on my Data base 
+        //        await stream.CopyToAsync(stream2);
 
-                CQRS.IResult result = _disptacher.Dispatch(new CreatePictureAlbumCommand(id, fileName));
+        //        CQRS.IResult result = _disptacher.Dispatch(new CreatePictureAlbumCommand(id, fileName));
 
-                if (result.IsSuccess)
-                {
-                    return Ok(new { ImageUrl = result.Message });
-                }
-                return BadRequest(new { message = result.Message });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+        //        if (result.IsSuccess)
+        //        {
+        //            return Ok(new { ImageUrl = result.Message });
+        //        }
+        //        return BadRequest(new { message = result.Message });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new { message = ex.Message });
+        //    }
+        //}
 
         //test ok 
         [HttpDelete("DeletePicture/{id}")]

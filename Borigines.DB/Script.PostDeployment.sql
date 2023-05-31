@@ -35,6 +35,7 @@ INSERT INTO Categorys (Name_Category) VALUES
             (N'borinage') ,
             (N'presentation') ,
             (N'objectif') ,
+            (N'promenade') ,
             (N'soirée') ,
             (N'presse');
 
@@ -49,7 +50,9 @@ INSERT INTO Album_Picture (FK_Picture,FK_Album) VALUES
             (2,1),
             (3,1),
             (4,2),
-            (5,2);
+            (5,2),
+            (4,3),
+            (2,3);
 
 
 INSERT INTO Content_fr (Title,Content) VALUES 
