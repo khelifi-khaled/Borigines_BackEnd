@@ -1,6 +1,7 @@
 ﻿using BiriginesAPI.DTO;
 using BiriginesAPI.Mappers;
 using Borigines.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Commands;
 using Models.Queries;
@@ -13,6 +14,7 @@ namespace BiriginesAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AlbumController : ControllerBase
     {
         private readonly IDisptacher _disptacher;
@@ -26,6 +28,7 @@ namespace BiriginesAPI.Controllers
         }
         //test ok 
         [HttpGet("GetAllAlbums")]
+        [AllowAnonymous]
         public IActionResult GetAllAlbums()
         {
             //geting all albums infos 
@@ -59,34 +62,32 @@ namespace BiriginesAPI.Controllers
             return Ok(new { IdAlbumInserted = result.Message });
         }
 
-        ////no test 
-        //[HttpPost("PostPicture/{id}")]
-        //public async Task<IActionResult> PostPicture(int id, [FromBody] UploadPicturesDOT dto)
-        //{
-        //    try
-        //    {
-        //        _env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-        //        using Stream stream = new MemoryStream(dto.ArticlePicture);
-        //        string fileName = Guid.NewGuid().ToString() + dto.FileName;
-        //        string path = Path.Combine(_env.WebRootPath, "Images/", fileName);
-        //        using FileStream stream2 = new(path, FileMode.Create);
+        // test ok  
+        [HttpPost("PostPicture/{id}")]
+        public async Task<IActionResult> PostPicture(int id, [FromForm] UploadPicturesDOT dto)
+        {
+            try
+            {
+                _env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-        //        //await picture to server then i can insert my infos on my Data base 
-        //        await stream.CopyToAsync(stream2);
+                string fileName = Guid.NewGuid().ToString() + dto.PhotoFile.FileName;
+                string path = Path.Combine(_env.WebRootPath, "Images/", fileName);
+                using FileStream stream = new(path, FileMode.Create);
 
-        //        CQRS.IResult result = _disptacher.Dispatch(new CreatePictureAlbumCommand(id, fileName));
+                await dto.PhotoFile.CopyToAsync(stream);
 
-        //        if (result.IsSuccess)
-        //        {
-        //            return Ok(new { ImageUrl = result.Message });
-        //        }
-        //        return BadRequest(new { message = result.Message });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new { message = ex.Message });
-        //    }
-        //}
+                CQRS.IResult result = _disptacher.Dispatch(new CreatePictureAlbumCommand(id, fileName));
+                if (result.IsSuccess)
+                {
+                    return Ok(new { ImageUrl = result.Message });
+                }
+                return BadRequest(new { message = result.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
         //test ok 
         [HttpDelete("DeletePicture/{id}")]

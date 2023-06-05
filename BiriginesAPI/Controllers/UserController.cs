@@ -13,6 +13,7 @@ using System.Security.Claims;
 namespace BiriginesAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -29,6 +30,7 @@ namespace BiriginesAPI.Controllers
 
         //// just for Token test
         [HttpPost("Token")]
+        [AllowAnonymous]
         public IActionResult Token(UserLoginDTO dto)
         {
             User? u = _disptacher.Dispatch(new LoginUserQuery(dto.Login, dto.Password));
@@ -45,9 +47,9 @@ namespace BiriginesAPI.Controllers
 
 
 
-        [Authorize(Roles = "Admin")]
+       
         [HttpGet]
-        
+        [Authorize(Roles ="Admin")]
         public IActionResult Get()
         {
             IEnumerable<User>? users = _disptacher.Dispatch(new GetUsersQuery()).ToList();
@@ -60,6 +62,7 @@ namespace BiriginesAPI.Controllers
 
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public IActionResult Login(UserLoginDTO dto)
         {
             User? u = _disptacher.Dispatch(new LoginUserQuery(dto.Login, dto.Password));
@@ -71,8 +74,8 @@ namespace BiriginesAPI.Controllers
             return Ok(u);
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost("PostUser")]
+        [Authorize(Roles = "Admin")]
         public IActionResult PostUser(CreateUserDTO dto)
         {
             CQRS.IResult result =
@@ -86,8 +89,8 @@ namespace BiriginesAPI.Controllers
             return BadRequest(new { message =  result.Message });
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPut("PutUser")]
+        [Authorize(Roles = "Admin")]
         public IActionResult PutUser(UpdateUserDTO dto)
         {
             CQRS.IResult result =
@@ -102,8 +105,8 @@ namespace BiriginesAPI.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteUser(int id)
         {
             CQRS.IResult result = _disptacher.Dispatch(new DeleteUserCommand(id));
@@ -115,7 +118,6 @@ namespace BiriginesAPI.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
         [HttpPost("CheckEmail")]
         public IActionResult CheckEmail(CheckEmailDTO dto)
         {

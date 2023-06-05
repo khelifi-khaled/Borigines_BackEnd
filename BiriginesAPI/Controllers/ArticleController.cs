@@ -1,9 +1,11 @@
 ﻿using BiriginesAPI.DTO;
 using BiriginesAPI.Mappers;
 using Borigines.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Commands;
 using Models.Queries;
+using System.Data;
 using Tools.CQRS;
 using CQRS = Tools.CQRS.Commands;
 
@@ -16,6 +18,7 @@ namespace BiriginesAPI.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ArticleController : ControllerBase
     {
         private readonly IDisptacher _disptacher;
@@ -32,6 +35,7 @@ namespace BiriginesAPI.Controllers
 
         //test ok 
         [HttpGet("GetAllByCategory/{CategoryId}/{language}")]
+        [AllowAnonymous]
         public IActionResult GetAllByCategory(int CategoryId , string language)
         {
             IEnumerable<Article> articles = _disptacher.Dispatch(
@@ -51,6 +55,7 @@ namespace BiriginesAPI.Controllers
         
         //test ok 
         [HttpGet("GetArticleById/{id}/{language}")]
+        [AllowAnonymous]
         public IActionResult GetArticleById(int id , string language)
         {
             //geting my art from DB 
